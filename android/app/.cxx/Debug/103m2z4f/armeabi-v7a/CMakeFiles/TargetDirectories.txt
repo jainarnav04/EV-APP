@@ -1,0 +1,2 @@
+C:/Users/vrath/Desktop/dissertation/zip/New folder/easy_vahan/android/app/.cxx/Debug/103m2z4f/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/vrath/Desktop/dissertation/zip/New folder/easy_vahan/android/app/.cxx/Debug/103m2z4f/armeabi-v7a/CMakeFiles/rebuild_cache.dir

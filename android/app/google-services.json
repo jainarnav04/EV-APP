@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "281646115646",
+    "project_id": "easy-vahan-2d70a",
+    "storage_bucket": "easy-vahan-2d70a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:281646115646:android:f5ca4752e4844ef8e0da6f",
+        "android_client_info": {
+          "package_name": "com.example.easy_vahan"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6fbcRaOciRs5QBh5AGhOyCKig4RWB9Kg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
