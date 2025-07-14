@@ -50,9 +50,7 @@ A modern Flutter application for vehicle management and services.
 4. **Run the app**
    - **Windows**:
      ```bash
-     copy run_app.bat.example run_app.bat
-     # Edit run_app.bat and add your API key
-     .\run_app.bat
+     flutter run --dart-define=GOOGLE_MAPS_API_KEY="GOOGLE_MAPS_API_KEY" --dart-define=WEB_API_KEY="WEB_API_KEY"--dart-define=WEB_APP_ID=1:WEB_APP_ID
      ```
    - **macOS/Linux**:
      ```bash
