@@ -56,6 +56,8 @@ A modern Flutter application for vehicle management and services.
 
 Create a `run_app.bat` file (Windows) or set environment variables (macOS/Linux) with:
 - `GOOGLE_MAPS_API_KEY`: Your Google Maps API key
+-  `WEB_API_KEY`: Your Web API key
+-  `APP ID`: Your APP ID
 
 ### Important Security Note
 
