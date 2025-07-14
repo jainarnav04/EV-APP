@@ -23,61 +23,6 @@ A modern Flutter application for vehicle management and services.
 
 ### Prerequisites
 
-- Flutter SDK
-- Android Studio / Xcode
-- Google Maps API Key
-
-### Setup
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/jainarnav04/EV-APP.git
-   cd EV-APP
-   ```
-
-2. **Get dependencies**
-   ```bash
-   flutter pub get
-   ```
-
-3. **Set up Google Maps API**
-   - Get an API key from the [Google Cloud Console](https://console.cloud.google.com/)
-   - Enable these APIs:
-     - Maps SDK for Android
-     - Maps SDK for iOS
-     - Places API
-
-4. **Run the app**
-     ```bash
-     flutter run --dart-define=GOOGLE_MAPS_API_KEY="GOOGLE_MAPS_API_KEY" --dart-define=WEB_API_KEY="WEB_API_KEY"--dart-define=WEB_APP_ID=1:WEB_APP_ID
-     ```
-
-### Environment Variables
-
-Create a `run_app.bat` file (Windows) or set environment variables (macOS/Linux) with:
-- `GOOGLE_MAPS_API_KEY`: Your Google Maps API key
--  `WEB_API_KEY`: Your Web API key
--  `APP ID`: Your APP ID
-
-### Important Security Note
-
-Never commit your API keys to version control. The `.gitignore` is configured to exclude:
-- `run_app.bat`
-- `.env` files
-- Other sensitive files
-- **Local Storage**: Shared Preferences
-
-## 📱 Supported Platforms
-
-- Android (Primary)
-- iOS
-- Web
-- Windows (Limited support)
-
-## 🚀 Getting Started
-
-### Prerequisites
-
 - Flutter SDK (3.32.6 or later)
 - Dart SDK (3.8.1 or later)
 - Android Studio / VS Code
@@ -136,7 +81,7 @@ flutter doctor
 ```
 This should show all checks passing for Android toolchain and Java development kit.
 
-### Installation
+### Setup
 
 1. **Clone the repository**
    ```bash
@@ -144,11 +89,10 @@ This should show all checks passing for Android toolchain and Java development k
    cd EV-APP
    ```
 
-2. **Install dependencies**
+2. **Get dependencies**
    ```bash
    flutter pub get
    ```
-
 3. **Configure Firebase**
    - Create a new Firebase project
    - Add Android/iOS/Web app to your Firebase project
@@ -157,27 +101,40 @@ This should show all checks passing for Android toolchain and Java development k
      - iOS: `ios/Runner/GoogleService-Info.plist`
      - Web: `web/firebase-config.js`
 
-4. **Run the app**
-   ```bash
-   # For Android
-   flutter run -d <device_id>
-   
-   # For iOS
-   flutter run -d <device_id>
-   
-   # For web
-   flutter run -d chrome
-   ```
+4. **Set up Google Maps API**
+   - Get an API key from the [Google Cloud Console](https://console.cloud.google.com/)
+   - Enable these APIs:
+     - Maps SDK for Android
+     - Maps SDK for iOS
+     - Places API
 
-## 🔧 Configuration
+5. **Run the app**
+     ```bash
+     flutter run --dart-define=GOOGLE_MAPS_API_KEY="GOOGLE_MAPS_API_KEY" --dart-define=WEB_API_KEY="WEB_API_KEY"--dart-define=WEB_APP_ID=1:WEB_APP_ID
+     ```
 
 ### Environment Variables
-Create a `.env` file in the root directory with the following variables:
 
-```
-GOOGLE_MAPS_API_KEY=your_google_maps_api_key
-FIREBASE_API_KEY=your_firebase_api_key
-```
+Create a `run_app.bat` file (Windows) or set environment variables (macOS/Linux) with:
+- `GOOGLE_MAPS_API_KEY`: Your Google Maps API key
+-  `WEB_API_KEY`: Your Web API key
+-  `APP ID`: Your APP ID
+
+### Important Security Note
+
+Never commit your API keys to version control. The `.gitignore` is configured to exclude:
+- `run_app.bat`
+- `.env` files
+- Other sensitive files
+- **Local Storage**: Shared Preferences
+
+## 📱 Supported Platforms
+
+- Android (Primary)
+- iOS
+- Web
+- Windows (Limited support)
+
 
 ### Android Setup
 - Set `compileSdkVersion` to 35 in `android/app/build.gradle`
