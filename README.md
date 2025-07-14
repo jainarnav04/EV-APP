@@ -48,13 +48,8 @@ A modern Flutter application for vehicle management and services.
      - Places API
 
 4. **Run the app**
-   - **Windows**:
      ```bash
      flutter run --dart-define=GOOGLE_MAPS_API_KEY="GOOGLE_MAPS_API_KEY" --dart-define=WEB_API_KEY="WEB_API_KEY"--dart-define=WEB_APP_ID=1:WEB_APP_ID
-     ```
-   - **macOS/Linux**:
-     ```bash
-     GOOGLE_MAPS_API_KEY=your_api_key flutter run
      ```
 
 ### Environment Variables
