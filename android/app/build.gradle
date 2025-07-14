@@ -2,6 +2,7 @@ plugins {
     id "com.android.application"
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
+    id "com.google.gms.google-services" // Google Services plugin
 }
 
 def localProperties = new Properties()
@@ -23,7 +24,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.example.easy_vahan"
+    namespace "com.easyvahan.easyvahan"
     compileSdkVersion 35  // Updated to resolve SDK 34 issues
     ndkVersion flutter.ndkVersion
 
@@ -42,7 +43,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.easy_vahan"
+        applicationId "com.easyvahan.easyvahan"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion 23  // Updated to 23 to support firebase_auth requirements

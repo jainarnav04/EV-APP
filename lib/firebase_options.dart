@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'dart:io' show Platform, PlatformException;
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -43,39 +44,69 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDHLbFJ2KpcCYwp-d7mKipSvNOoti6f4QI',
-    appId: '1:281646115646:web:1d3ac08ea454b87ee0da6f',
-    messagingSenderId: '281646115646',
-    projectId: 'easy-vahan-2d70a',
-    authDomain: 'easy-vahan-2d70a.firebaseapp.com',
-    storageBucket: 'easy-vahan-2d70a.appspot.com',
-    measurementId: 'G-V1WB0H0GST',
-  );
+  static FirebaseOptions get web {
+    // Using the same API key and app ID for web as provided in .env
+    final apiKey = const String.fromEnvironment('WEB_API_KEY');
+    final appId = const String.fromEnvironment('WEB_APP_ID');
+    
+    // These values are hardcoded for now but can be moved to .env if needed
+    final projectId = 'ev-navigation-2e1b6';
+    
+    return FirebaseOptions(
+      apiKey: apiKey,
+      appId: appId,
+      messagingSenderId: '337687220694',
+      projectId: projectId,
+      authDomain: '$projectId.firebaseapp.com',
+      storageBucket: '$projectId.appspot.com',
+    );
+  }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyC6fbcRaOciRs5QBh5AGhOyCKig4RWB9Kg',
-    appId: '1:281646115646:android:f5ca4752e4844ef8e0da6f',
-    messagingSenderId: '281646115646',
-    projectId: 'easy-vahan-2d70a',
-    storageBucket: 'easy-vahan-2d70a.appspot.com',
-  );
+  static FirebaseOptions get android {
+    // Reusing the same API key and app ID for Android as provided in .env
+    final apiKey = const String.fromEnvironment('WEB_API_KEY');
+    final appId = const String.fromEnvironment('WEB_APP_ID');
+    final projectId = 'ev-navigation-2e1b6';
+    
+    return FirebaseOptions(
+      apiKey: apiKey,
+      appId: appId,
+      messagingSenderId: '337687220694',
+      projectId: projectId,
+      storageBucket: '$projectId.appspot.com',
+    );
+  }
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: String.fromEnvironment('GOOGLE_MAPS_API_KEY'),
-    appId: '1:281646115646:ios:2d5c74ebdf7aa58ae0da6f',
-    messagingSenderId: '281646115646',
-    projectId: 'easy-vahan-2d70a',
-    storageBucket: 'easy-vahan-2d70a.appspot.com',
-    iosBundleId: 'com.example.easyVahan',
-  );
+  static FirebaseOptions get ios {
+    // For iOS, we'll use the same credentials as Android for now
+    // You can add separate iOS credentials to .env later if needed
+    final apiKey = const String.fromEnvironment('WEB_API_KEY');
+    final appId = const String.fromEnvironment('WEB_APP_ID');
+    final projectId = 'ev-navigation-2e1b6';
+    
+    return FirebaseOptions(
+      apiKey: apiKey,
+      appId: appId,
+      messagingSenderId: '337687220694',
+      projectId: projectId,
+      storageBucket: '$projectId.appspot.com',
+      iosBundleId: 'com.easyvahan.easyvahan',
+    );
+  }
 
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: String.fromEnvironment('GOOGLE_MAPS_API_KEY'),
-    appId: '1:281646115646:ios:e57f5f2b5ac2a61ae0da6f',
-    messagingSenderId: '281646115646',
-    projectId: 'easy-vahan-2d70a',
-    storageBucket: 'easy-vahan-2d70a.appspot.com',
-    iosBundleId: 'com.example.easyVahan.RunnerTests',
-  );
+  static FirebaseOptions get macos {
+    // Using the same credentials as other platforms for simplicity
+    final apiKey = const String.fromEnvironment('WEB_API_KEY');
+    final appId = const String.fromEnvironment('WEB_APP_ID');
+    final projectId = 'ev-navigation-2e1b6';
+    
+    return FirebaseOptions(
+      apiKey: apiKey,
+      appId: appId,
+      messagingSenderId: '337687220694',
+      projectId: projectId,
+      storageBucket: '$projectId.appspot.com',
+      iosBundleId: 'com.easyvahan.easyvahan',
+    );
+  }
 }

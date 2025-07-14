@@ -121,31 +121,48 @@ class _LoginPageState extends State<LoginPage> {
     return SizedBox(
       width: MediaQuery.sizeOf(context).width,
       child: MaterialButton(
-        onPressed: () async {
-          if (_loginFormKey.currentState?.validate() ?? false) {
-            _loginFormKey.currentState?.save();
-            bool result = await _authService.login(email!, password!);
-            if (result) {
-              _alertService.showToast(
-                text: "Successfully logged in! ",
-                icon: Icons.check,
-              );
-              _navigationService.pushReplacementNamed("/home");
-            } else {
-              _alertService.showToast(
-                text: "Failed to login, Please try again! ",
-                icon: Icons.error,
-              );
-            }
-          }
-        },
+        onPressed: _authService.isLoading 
+            ? null 
+            : () async {
+                if (_loginFormKey.currentState?.validate() ?? false) {
+                  _loginFormKey.currentState?.save();
+                  try {
+                    bool result = await _authService.login(email!, password!);
+                    if (result && mounted) {
+                      _alertService.showToast(
+                        text: "Successfully logged in!",
+                        icon: Icons.check,
+                      );
+                      _navigationService.pushReplacementNamed("/home");
+                    }
+                  } catch (e) {
+                    if (mounted) {
+                      _alertService.showToast(
+                        text: e.toString(),
+                        icon: Icons.error,
+                      );
+                    }
+                  }
+                }
+              },
         color: Theme.of(context).colorScheme.primary,
-        child: const Text(
-          "Login",
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
+        disabledColor: Colors.grey,
+        child: _authService.isLoading
+            ? const SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2,
+                ),
+              )
+            : const Text(
+                "Login",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
       ),
     );
   }

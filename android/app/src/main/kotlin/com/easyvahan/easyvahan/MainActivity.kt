@@ -1,4 +1,4 @@
-package com.example.easy_vahan
+package com.easyvahan.easyvahan
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -6,6 +6,7 @@ class CustomFormField extends StatelessWidget {
   final RegExp validationRegEx;
   final bool obsecureText;
   final void Function(String?) onSaved;
+  final TextInputType? keyboardType;
   const CustomFormField({
     super.key,
     required this.hintText,
@@ -13,6 +14,7 @@ class CustomFormField extends StatelessWidget {
     required this.validationRegEx,
     required this.onSaved,
     this.obsecureText = false,
+    this.keyboardType,
   });
 
   @override
@@ -22,6 +24,7 @@ class CustomFormField extends StatelessWidget {
       child: TextFormField(
         onSaved: onSaved,
         obscureText: obsecureText,
+        keyboardType: keyboardType,
         validator: (value) {
           if (value != null && validationRegEx.hasMatch(value)) {
             return null;

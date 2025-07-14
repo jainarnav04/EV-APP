@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "281646115646",
-    "project_id": "easy-vahan-2d70a",
-    "storage_bucket": "easy-vahan-2d70a.appspot.com"
+    "project_number": "337687220694",
+    "project_id": "ev-navigation-2e1b6",
+    "storage_bucket": "ev-navigation-2e1b6.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:281646115646:android:f5ca4752e4844ef8e0da6f",
+        "mobilesdk_app_id": "1:337687220694:android:b5d16de123b9c2c74dd477",
         "android_client_info": {
-          "package_name": "com.example.easy_vahan"
+          "package_name": "com.easyvahan.easyvahan"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC6fbcRaOciRs5QBh5AGhOyCKig4RWB9Kg"
+          "current_key": "AIzaSyCM3EU3R8O6J1X8xRBp7Gp6bLhkDryGiZA"
         }
       ],
       "services": {
