@@ -31,8 +31,8 @@ A modern Flutter application for vehicle management and services.
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/easy_vahan.git
-   cd easy_vahan
+   git clone https://github.com/jainarnav04/EV-APP.git
+   cd EV-APP
    ```
 
 2. **Get dependencies**
@@ -145,8 +145,8 @@ This should show all checks passing for Android toolchain and Java development k
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/easy_vahan.git
-   cd easy_vahan
+   git clone https://github.com/jainarnav04/EV-APP.git
+   cd EV-APP
    ```
 
 2. **Install dependencies**
@@ -196,13 +196,9 @@ FIREBASE_API_KEY=your_firebase_api_key
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## 📞 Support
 
-For support, email support@easyvahan.com or open an issue on GitHub.
+For support, email support@easyvahan.in or open an issue on GitHub.
 
 ---
 
