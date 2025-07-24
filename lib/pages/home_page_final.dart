@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -28,6 +29,8 @@ class _HomePageFinalState extends State<HomePageFinal> {
   @override
   void initState() {
     super.initState();
+
+    Timer? _stationRefreshTimer;
     
     // Get API key from build arguments
     _apiKey = const String.fromEnvironment('GOOGLE_MAPS_API_KEY');
@@ -49,6 +52,11 @@ class _HomePageFinalState extends State<HomePageFinal> {
     // Request location permissions and get current location
     _requestLocationPermission();
     _getCurrentLocation();
+    fetchStationsFromFirestore(); // dynamic station loader
+    _stationRefreshTimer = Timer.periodic(Duration(minutes: 2), (timer) {
+      fetchStationsFromFirestore();
+    });
+
   }
 
   static const LatLng _pMNITJaipur = LatLng(26.8644, 75.8109);
@@ -72,50 +80,68 @@ class _HomePageFinalState extends State<HomePageFinal> {
   bool _isWaitTimeDialogShown = false;
   bool _isLoading = false;
 
-  final List<Map<String, dynamic>> _chargingStations = [
-    {
-      'position': const LatLng(26.8540, 75.8200),
-      'slots': 3,
-      'queue': 0,
-      'waitTime': 0.0,
-      'name': 'Jaipur Station Charger',
-      'powerKW': 50.0
-    },
-    {
-      'position': const LatLng(26.9124, 75.7873),
-      'slots': 2,
-      'queue': 0,
-      'waitTime': 0.0,
-      'name': 'Hawa Mahal Charger',
-      'powerKW': 22.0
-    },
-    {
-      'position': const LatLng(26.9855, 75.8515),
-      'slots': 4,
-      'queue': 0,
-      'waitTime': 0.0,
-      'name': 'Jagatpura Charger',
-      'powerKW': 150.0
-    },
-    {
-      'position': const LatLng(26.8200, 75.8700),
-      'slots': 2,
-      'queue': 0,
-      'waitTime': 0.0,
-      'name': 'Malviya Nagar Charger',
-      'powerKW': 7.0
-    },
-    {
-      'position': const LatLng(26.9500, 75.7700),
-      'slots': 5,
-      'queue': 0,
-      'waitTime': 0.0,
-      'name': 'Vaishali Nagar Charger',
-      'powerKW': 50.0
-    },
-  ];
+  final List<Map<String, dynamic>> _chargingStations = [];
+  void fetchStationsFromFirestore() async {
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('charging_stations')
+          .get();
 
+      print('Raw docs fetched: ${snapshot.docs.length}');
 
+      final List<Map<String, dynamic>> stations = [];
+
+      for (var doc in snapshot.docs) {
+        final data = doc.data();
+        print('Doc ID: ${doc.id}, Data: $data');
+
+        final lat = data['latitude'];
+        final lng = data['longitude'];
+
+        if (lat != null && lng != null) {
+          stations.add({
+            'position': LatLng(lat, lng),
+            'slots': data['total_slots'] ?? 0,
+            'queue': data['latest_wait_time_minutes'] ?? 0,
+            'waitTime': 0.0, // You can calculate or update this later
+            'name': data['name'] ?? 'Unknown',
+            'powerKW': data['charging_rate']?.toDouble() ?? 0.0,
+          });
+        }
+        // _updateMarkers();
+        // _addChargingStationMarkers();
+      }
+
+      setState(() {
+        _chargingStations.clear(); // Clear hardcoded stations if needed
+        _chargingStations.addAll(stations);
+      });
+
+    } catch (e) {
+      print('Error fetching charging stations: $e');
+    }
+    print("Fetched ${_chargingStations.length} stations:");
+    for (var station in _chargingStations) {
+      print(station);
+    }
+  }
+
+  void _updateMarkers() {
+    _markers.clear();
+    for (var station in _chargingStations) {
+      _markers.add(
+        Marker(
+          markerId: MarkerId(station['name']),
+          position: station['position'],
+          infoWindow: InfoWindow(
+            title: station['name'],
+            snippet: 'Slots: ${station['slots']}, Power: ${station['powerKW']} kW',
+          ),
+        ),
+      );
+    }
+    setState(() {});
+  }
 
   Future<void> _requestLocationPermission() async {
     _serviceEnabled = await _locationController.serviceEnabled();
@@ -155,17 +181,107 @@ class _HomePageFinalState extends State<HomePageFinal> {
     print('Adding charging station markers');
     for (var station in _chargingStations) {
       _markers.add(Marker(
-        markerId: MarkerId('charging_station_${station['position']}'),
+        markerId: MarkerId(station['name']),
         position: station['position'],
         infoWindow: InfoWindow(
           title: station['name'],
           snippet:
               'Slots: ${station['slots']}, Wait: ${station['waitTime']} min, Queue: ${station['queue']}, Power: ${station['powerKW']} kW',
+          onTap: () {
+            _onChargingStationTapped(station); // <-- Add this function
+          },
         ),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
       ));
     }
     setState(() {});
+  }
+  void _onChargingStationTapped(Map<String, dynamic> station) {
+    print('Charging station clicked');
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (_) => Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Book Charger at ${station['name']}',
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 12),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.bolt),
+              label: const Text('Book Now'),
+              onPressed: () {
+                Navigator.pop(context);
+                _showVehicleBookingDialog(station['station_id']);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  void _showVehicleBookingDialog(String stationId) {
+    final _vehicleNumberController = TextEditingController();
+    final _initialBatteryController = TextEditingController();
+    final _targetBatteryController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Enter Vehicle Details'),
+        content: SingleChildScrollView(
+          child: Column(
+            children: [
+              TextField(
+                controller: _vehicleNumberController,
+                decoration: const InputDecoration(labelText: 'Vehicle Number'),
+              ),
+              TextField(
+                controller: _initialBatteryController,
+                decoration: const InputDecoration(labelText: 'Initial Battery (%)'),
+                keyboardType: TextInputType.number,
+              ),
+              TextField(
+                controller: _targetBatteryController,
+                decoration: const InputDecoration(labelText: 'Target Battery (%)'),
+                keyboardType: TextInputType.number,
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            child: const Text('Cancel'),
+            onPressed: () => Navigator.pop(context),
+          ),
+          ElevatedButton(
+            child: const Text('Confirm'),
+            onPressed: () async {
+              Navigator.pop(context);
+              final vehicleData = {
+                'vehicle_number': _vehicleNumberController.text.trim(),
+                'initial_battery_level': int.tryParse(_initialBatteryController.text) ?? 0,
+                'target_battery_level': int.tryParse(_targetBatteryController.text) ?? 100,
+                'status': 'BOOKED',
+                'timestamp': DateTime.now(),
+              };
+              await FirebaseFirestore.instance
+                  .collection('charging_stations')
+                  .doc(stationId)
+                  .collection('vehicles')
+                  .add(vehicleData);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Charger booked successfully!')),
+              );
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   void _showWaitTimeDialog() {
@@ -660,6 +776,10 @@ class _HomePageFinalState extends State<HomePageFinal> {
             color: Colors.red,
             icon: const Icon(Icons.logout),
           ),
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: fetchStationsFromFirestore,
+          ),
         ],
       ),
       drawer: Drawer(
@@ -773,6 +893,7 @@ class _HomePageFinalState extends State<HomePageFinal> {
             ),
         ],
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: _isMapReady
           ? FloatingActionButton(
               onPressed: _optimizeRoute,
@@ -791,7 +912,7 @@ class _HomePageFinalState extends State<HomePageFinal> {
         setState(() {
           _isMapReady = true;
           _addChargingStationMarkers();
-          Future.delayed(const Duration(seconds: 1), _showWaitTimeDialog);
+          // Future.delayed(const Duration(seconds: 1), _showWaitTimeDialog);
         });
         print('Map created');
       },
