@@ -7,7 +7,7 @@ buildscript {
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.android.tools.build:gradle:8.1.0' // Added AGP version 8.1.0 to support compileSdk 34
+        classpath 'com.android.tools.build:gradle:8.3.0' // Added AGP version 8.1.0 to support compileSdk 34
         classpath 'com.google.gms:google-services:4.4.1' // Google Services plugin
     }
 }

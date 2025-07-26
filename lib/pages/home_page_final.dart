@@ -100,6 +100,7 @@ class _HomePageFinalState extends State<HomePageFinal> {
 
         if (lat != null && lng != null) {
           stations.add({
+            'station_id': doc.id,
             'position': LatLng(lat, lng),
             'slots': data['total_slots'] ?? 0,
             'queue': data['latest_wait_time_minutes'] ?? 0,
@@ -115,6 +116,7 @@ class _HomePageFinalState extends State<HomePageFinal> {
       setState(() {
         _chargingStations.clear(); // Clear hardcoded stations if needed
         _chargingStations.addAll(stations);
+        _updateMarkers();
       });
 
     } catch (e) {
