@@ -233,7 +233,7 @@ class _HomePageFinalState extends State<HomePageFinal> {
 
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: const Text('Enter Vehicle Details'),
         content: SingleChildScrollView(
           child: Column(
@@ -258,12 +258,11 @@ class _HomePageFinalState extends State<HomePageFinal> {
         actions: [
           TextButton(
             child: const Text('Cancel'),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
           ),
           ElevatedButton(
             child: const Text('Confirm'),
             onPressed: () async {
-              Navigator.pop(context);
               final vehicleData = {
                 'vehicle_number': _vehicleNumberController.text.trim(),
                 'initial_battery_level': int.tryParse(_initialBatteryController.text) ?? 0,
@@ -271,6 +270,9 @@ class _HomePageFinalState extends State<HomePageFinal> {
                 'status': 'BOOKED',
                 'timestamp': DateTime.now(),
               };
+
+              Navigator.pop(dialogContext);
+
               await FirebaseFirestore.instance
                   .collection('charging_stations')
                   .doc(stationId)
